@@ -55,3 +55,5 @@ export const mapStateToProps = ({ user }) => ({
 export const mapDispatchToProps = dispatch =>  bindActionCreators({ removeUser, hasErrored }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// initial commit comment
