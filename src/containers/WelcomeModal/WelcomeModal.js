@@ -80,6 +80,7 @@ export class WelcomeModal extends Component {
   }
 }
 
-export const mapDispatchToProps = dispatch => bindActionCreators({ createUser, hasErrored, addMessage }, dispatch)
+export const mapDispatchToProps = dispatch =>
+  bindActionCreators({ createUser, hasErrored, addMessage }, dispatch)
 
 export default connect(null, mapDispatchToProps)(WelcomeModal);

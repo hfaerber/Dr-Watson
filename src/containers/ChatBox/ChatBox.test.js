@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { ChatBox, mapStateToProps, mapDispatchToProps } from './ChatBox';
-import { hasErrored } from '../../actions';
+import { hasErrored, addMessage } from '../../actions';
 import { postMessage } from '../../apiCalls';
 
 jest.mock('../../apiCalls');
@@ -133,7 +133,11 @@ describe('mapStateToProps', () => {
       errorMsg: ''
     };
     const expected = {
-      errorMsg: ''
+      errorMsg: '',
+      messages: [{
+        message: 'Hi there, my name is Dr. Watson. I understand that you have been feeling happy. That is super exciting to hear!',
+        isUser: false,
+      }]
     };
     const mappedProps = mapStateToProps(mockState);
 
@@ -142,13 +146,22 @@ describe('mapStateToProps', () => {
 });
 
 describe('mapDispatchToProps', () => {
+  let mockDispatch, mappedProps;
+
+  beforeEach(() => {
+    mockDispatch = jest.fn();
+    mappedProps = mapDispatchToProps(mockDispatch);
+  })
+
   it('calls dispatch with a hasErrored action when hasErrored is called', () => {
-    const mockDispatch = jest.fn();
     const actionToDispatch = hasErrored('fetch failed');
-
-    const mappedProps = mapDispatchToProps(mockDispatch);
     mappedProps.hasErrored('fetch failed');
+    expect(mockDispatch).toHaveBeenCalledWith(actionToDispatch);
+  });
 
+  it('calls dispatch with an addMessage action when addMessage is called', () => {
+    const actionToDispatch = addMessage('Test message', true);
+    mappedProps.addMessage('Test message', true);
     expect(mockDispatch).toHaveBeenCalledWith(actionToDispatch);
   });
 });

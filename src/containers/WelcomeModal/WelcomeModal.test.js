@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { WelcomeModal, mapDispatchToProps } from './WelcomeModal';
-import { createUser, hasErrored } from '../../actions';
+import { createUser, hasErrored, addMessage } from '../../actions';
 import { startConversation } from '../../apiCalls';
 
 jest.mock('../../apiCalls');
@@ -75,7 +75,7 @@ describe('WelcomeModal component', () => {
   });
 
   it('should call startConversation and addMessage with correct arguments when connectToChatBot is called', async () => {
-    const mockMessage = { 
+    const mockMessage = {
       message: 'Hi there, my name is Dr. Watson. I understand that you have been feeling happy. That is super exciting to hear!'
     };
     startConversation.mockImplementation(() => {
@@ -124,7 +124,7 @@ describe('WelcomeModal component', () => {
     wrapper.find('input').at(0).simulate('change', mockFirstNameEvent);
     wrapper.find('input').at(1).simulate('change', mockLastNameEvent);
     wrapper.find('select').simulate('change', mockFeelingEvent);
-    
+
     expect(wrapper.instance().handleChange).toHaveBeenCalledWith(mockFirstNameEvent);
     expect(wrapper.instance().handleChange).toHaveBeenCalledWith(mockLastNameEvent);
     expect(wrapper.instance().handleChange).toHaveBeenCalledWith(mockFeelingEvent);
@@ -167,4 +167,12 @@ describe('mapDispatchToProps', () => {
 
     expect(mockDispatch).toHaveBeenCalledWith(actionToDispatch);
   });
+
+  it('calls dispatch with an addMessage action when addMessage is called', () => {
+    const mockDispatch = jest.fn();
+    const actionToDispatch = addMessage('Test message', true);
+    const mappedProps = mapDispatchToProps(mockDispatch);
+    mappedProps.addMessage('Test message', true);
+    expect(mockDispatch).toHaveBeenCalledWith(actionToDispatch);
+  })
 })
